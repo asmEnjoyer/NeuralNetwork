@@ -68,5 +68,6 @@
     <None Include="testOutput.ubyte">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\README" />
   </ItemGroup>
 </Project>

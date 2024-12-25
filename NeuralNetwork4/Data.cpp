@@ -9,7 +9,6 @@ Data::Data()
         _ppTrainingInputs[i] = new long double[_trainingInputCount];
     }
 
-    //TODO: this should not be hardoded in the future
     _ppTrainingInputs[0][0] = 0.0f;  _ppTrainingInputs[0][1] = 0.0f;  _ppTrainingInputs[0][2] = 0.0f;
     _ppTrainingInputs[1][0] = 0.0f;  _ppTrainingInputs[1][1] = 0.0f;  _ppTrainingInputs[1][2] = 1.0f;
     _ppTrainingInputs[2][0] = 0.0f;  _ppTrainingInputs[2][1] = 1.0f;  _ppTrainingInputs[2][2] = 0.0f;
@@ -25,7 +24,6 @@ Data::Data()
         _ppTrainingOutputs[i] = new long double[_trainingOutputCount];
     }
 
-    //TODO: this should not be hardoded in the future
     _ppTrainingOutputs[0][0] = 0.0f; _ppTrainingOutputs[0][1] = 0.0f;
     _ppTrainingOutputs[1][0] = 0.0f; _ppTrainingOutputs[1][1] = 1.0f;
     _ppTrainingOutputs[2][0] = 0.0f; _ppTrainingOutputs[2][1] = 1.0f;

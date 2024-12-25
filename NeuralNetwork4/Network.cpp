@@ -60,8 +60,6 @@ void Network::train(int epochs)
 
 }
 
-//NEXT: fix this shit 
-
 void Network::train()
 {
 		long double* inputs;
