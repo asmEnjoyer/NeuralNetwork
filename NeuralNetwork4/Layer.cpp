@@ -76,7 +76,6 @@ long double* Layer::Compute(long double* inputs)
 		}
 		_pOutputs[i] = Activation(activation);
 	}
-
 	return _pOutputs;
 }
 

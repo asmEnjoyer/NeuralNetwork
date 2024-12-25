@@ -129,14 +129,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Data.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="Network.cpp" />
-    <ClCompile Include="NetworkData.cpp" />
     <ClCompile Include="NeuralNetwork4.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Data.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Network.h" />

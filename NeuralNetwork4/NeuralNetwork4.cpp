@@ -1,4 +1,4 @@
-#include "NetworkData.h"
+#include "Data.h"
 #include "Utility.h"
 #include "Network.h"
 #include "Log.h"
@@ -6,7 +6,7 @@
 
 int main()
 {
-    NetworkData* data = new NetworkData();
+    NetworkData* data = new Data();
     int layout[] = {3,9,9,2};
     Network* network = new Network(layout, 4,data);
     Utility.lr = 0.1f;

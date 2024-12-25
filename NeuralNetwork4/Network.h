@@ -19,6 +19,6 @@ class Network
 		~Network();
 		void train(int epochs);
 	private:
-		void train(bool& show,int& i);
+		void train();
 };
 
