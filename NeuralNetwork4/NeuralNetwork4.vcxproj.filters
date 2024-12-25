@@ -36,6 +36,9 @@
     <ClCompile Include="XorData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MNISTData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NetworkData.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="XorData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MNISTData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

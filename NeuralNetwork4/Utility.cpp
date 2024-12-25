@@ -2,12 +2,16 @@
 #include <ctime>
 #include <stdlib.h>
 
+
+//TODO: compleatly remove the utility class and replace it with class specific functions
+
 utility::utility():
 	lr(0),
 	error(0),
 	wd(0)
 {
 	srand((int)time(NULL));
+	//rand to remove the first resut that seems to be just the current milisecond number
 	rand();
 }
 

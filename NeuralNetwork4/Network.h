@@ -15,7 +15,7 @@ class Network
 		NetworkData* _data;
 
 	public:
-		Network(int* layout,int layers,NetworkData* data);
+		Network(NetworkData* data);
 		~Network();
 		void train(int epochs);
 	private:

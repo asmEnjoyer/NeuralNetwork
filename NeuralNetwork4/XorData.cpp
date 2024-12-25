@@ -67,3 +67,13 @@ void XorData::getSameData(long double*& inputs, long double*& outputs)
     for (int i = 0;i < _trainingOutputCount;i++)
         outputs[i] = _ppTrainingOutputs[_i][i];
 }
+
+int* XorData::getNetworkLayout() 
+{
+    return NetworkLayout;
+}
+
+int XorData::getNumberOfLayers()
+{
+    return numberOfLayers;
+}

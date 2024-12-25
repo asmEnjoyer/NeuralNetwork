@@ -1,9 +1,11 @@
 #include "Network.h"
 
+//NEXT: remove all hardcoded values including : the network's layout and let the data class handle it
 
-
-Network::Network(int* layout,int layers,NetworkData* data)
+Network::Network(NetworkData* data)
 {
+	int layers = data->getNumberOfLayers();
+	int* layout = data->getNetworkLayout();
 	_ppLayers = new Layer*[layers-1];
 	for (int i = 0; i < layers-2; i++)
 	{
@@ -29,34 +31,21 @@ void Network::train(int epochs)
 {
 	////TODO: make a logging library to replace the "disp" commented lines
 	bool show;	//disp
-	//int i;
 
-	//int* trainingSetOrder = new int[_data->trainingSetCount];
-	//Utility.fillWithNumberSequence(trainingSetOrder, _data->trainingSetCount);
-
-	Utility.error = 1000;
 	for (int epoch = 0; epoch < epochs; epoch++)
 	{
-		//Utility.shuffle(trainingSetOrder, _data->trainingSetCount);	
 		show = false;	//disp
 		if ((epoch + 1) % 10000 == 0)	//disp
 		{
 			show = true;	//disp
 		}
-	/*	if (Utility.error / (_data->trainingSetCount * Utility.lr) < 0.0001)
-			Utility.lr *= 0.5;*/
 		if (epoch == epochs - 1)	//disp
 			show = true;	//disp
 	
 	
 		Utility.error = 0;
-		//for (int x = 0; x < (int)_data->trainingSetCount; x++)
-		//{
-		//	i = trainingSetOrder[x];
-			train();
-		//}
+		train();
 	}
-	//delete[] trainingSetOrder;
 
 }
 
