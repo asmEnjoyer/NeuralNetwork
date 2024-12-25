@@ -70,10 +70,10 @@
     <None Include="testOutput.ubyte">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\README">
+    <None Include="ClassDiagram.cd">
       <Filter>UtilityResources</Filter>
     </None>
-    <None Include="ClassDiagram.cd">
+    <None Include="..\README.md">
       <Filter>UtilityResources</Filter>
     </None>
   </ItemGroup>

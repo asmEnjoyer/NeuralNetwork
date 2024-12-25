@@ -145,7 +145,7 @@
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\README" />
+    <None Include="..\README.md" />
     <None Include="ClassDiagram.cd" />
     <None Include="testInput.ubyte" />
     <None Include="testOutput.ubyte" />
