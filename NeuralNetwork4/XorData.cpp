@@ -1,6 +1,7 @@
-#include "Data.h"
+#include "XorData.h"
+#include <stdlib.h>
 
-Data::Data()
+XorData::XorData()
 {
 
     _ppTrainingInputs = new long double* [_trainingSetCount];
@@ -34,7 +35,7 @@ Data::Data()
     _ppTrainingOutputs[7][0] = 1.0f; _ppTrainingOutputs[7][1] = 1.0f;
 }
 
-Data::~Data()
+XorData::~XorData()
 {
     for (int i = 0; i < _trainingSetCount; i++)
     {
@@ -46,9 +47,9 @@ Data::~Data()
     delete[] _ppTrainingOutputs;
 }
 
-void Data::getNextData(long double*& inputs, long double*& outputs)
+void XorData::getNextData(long double*& inputs, long double*& outputs)
 {
-    _i = (_i + 1) % _trainingSetCount;
+    _i = (rand()) % _trainingSetCount;
     inputs = new long double[_trainingInputCount];
     outputs = new long double[_trainingOutputCount];
     for(int i=0;i<_trainingInputCount;i++)
@@ -57,7 +58,7 @@ void Data::getNextData(long double*& inputs, long double*& outputs)
         outputs[i] = _ppTrainingOutputs[_i][i];
 }
 
-void Data::getSameData(long double*& inputs, long double*& outputs)
+void XorData::getSameData(long double*& inputs, long double*& outputs)
 {
     inputs = new long double[_trainingInputCount];
     outputs = new long double[_trainingOutputCount];

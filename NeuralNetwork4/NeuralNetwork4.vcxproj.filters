@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="UtilityResources">
+      <UniqueIdentifier>{1e07ebb8-456e-4e2f-879d-8edd68f36294}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NeuralNetwork4.cpp">
@@ -30,7 +33,7 @@
     <ClCompile Include="Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data.cpp">
+    <ClCompile Include="XorData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,12 +53,11 @@
     <ClInclude Include="Log.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data.h">
+    <ClInclude Include="XorData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
     <None Include="train-images.ubyte">
       <Filter>Resource Files</Filter>
     </None>
@@ -68,6 +70,11 @@
     <None Include="testOutput.ubyte">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\README" />
+    <None Include="..\README">
+      <Filter>UtilityResources</Filter>
+    </None>
+    <None Include="ClassDiagram.cd">
+      <Filter>UtilityResources</Filter>
+    </None>
   </ItemGroup>
 </Project>

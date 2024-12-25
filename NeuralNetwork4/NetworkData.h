@@ -1,7 +1,5 @@
 #pragma once
 
-typedef unsigned int uint;
-
 class NetworkData
 {
     public:
