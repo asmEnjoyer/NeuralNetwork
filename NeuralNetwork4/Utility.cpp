@@ -23,7 +23,6 @@ void utility::fillWithNumberSequence(int* table,int size)
 	}
 }
 
-
 void utility::shuffle(int* array, int size)
 {
 	int k;
@@ -43,6 +42,7 @@ long double utility::Random()
 
 	return ran / RAND_MAX;
 }
+
 
 long double utility::CalculateError(long double* expectedOutputs, long double* calculatedOutputs, int outputCount)
 {

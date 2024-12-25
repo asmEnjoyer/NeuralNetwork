@@ -27,6 +27,8 @@ Layer::~Layer()
 		delete[] _ppWeights[i];
 	}
 	delete[] _ppWeights;
+	delete[] _pBiases;
+	delete[] _pDelta;
 }
 
 void Layer::initWeights()
