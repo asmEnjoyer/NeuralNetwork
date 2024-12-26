@@ -69,13 +69,13 @@ private:
 		/// Get the network layout.
 		/// </summary>
 		/// <returns>the network layout as an array of integers</returns>
-        int* getNetworkLayout();
+        int* getNetworkLayout() override;
 
 		/// <summary>
 		/// Get the number of layers in the network.
 		/// </summary>
 		/// <returns>the number of layers in the network</returns>
-        int getNumberOfLayers();
+        int getNumberOfLayers() override;
 
 
 

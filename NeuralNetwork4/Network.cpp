@@ -1,10 +1,11 @@
 #include "Network.h"
 
-//NEXT: remove all hardcoded values including : the network's layout and let the data class handle it
+//TODO add saving and loading the network data to a file
 
 Network::Network(NetworkData* data,long double lr)
 {
 	_lr = lr;
+	_error = 0;
 	int layers = data->getNumberOfLayers();
 	int* layout = data->getNetworkLayout();
 	_ppLayers = new Layer*[layers-1];
