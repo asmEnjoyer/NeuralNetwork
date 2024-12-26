@@ -1,5 +1,4 @@
 #include "Layer.h"
-#include "Utility.h"
 #include <cmath>
 
 Layer::Layer(int inputs, int outputs, Type type)
@@ -37,7 +36,7 @@ void Layer::initWeights()
 	{
 		for (int j = 0; j < _cOutputs; j++)
 		{
-			_ppWeights[i][j] = Utility.Random()*-1;
+			_ppWeights[i][j] = Random()*-1;
 		}
 	}
 	for (int i = 0; i < _cOutputs; i++)
@@ -54,6 +53,7 @@ long double Layer::Activation(long double x) const
 		return x;
 	if (_type == classification)
 		return 1/(1+exp(-x));
+	return 0;
 }
 
 long double Layer::dActivation(long double x) const
@@ -64,6 +64,7 @@ long double Layer::dActivation(long double x) const
 		return 1;
 	if (_type == classification)
 		return x * (1 - x);
+	return 0;
 }
 
 long double* Layer::Compute(long double* inputs)
@@ -114,16 +115,21 @@ long double* Layer::Delta(long double* output, DeltaMode mode)
 	return output;
 }
 
-void Layer::Descent(long double* inputs)
+void Layer::Descent(long double* inputs,long double lr)
 {
 	for (int i = 0; i < _cOutputs; i++)
 	{
-		_pBiases[i] += _pDelta[i] * Utility.lr;
-		_pBiases[i] *= (1 - Utility.wd);
+		_pBiases[i] += _pDelta[i] * lr;
+		//_pBiases[i] *= (1 - Utility.wd);
 		for (int j = 0; j < _cInputs; j++)
 		{
-			_ppWeights[j][i] += inputs[j] * _pDelta[i] * Utility.lr;
-			_ppWeights[j][i] *= (1 - Utility.wd);
+			_ppWeights[j][i] += inputs[j] * _pDelta[i] * lr;
+			//_ppWeights[j][i] *= (1 - Utility.wd);
 		}
 	}
+}
+
+long double Layer::Random()
+{
+	return (long double)rand() / RAND_MAX;
 }

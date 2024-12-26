@@ -1,5 +1,4 @@
 #include "XorData.h"
-#include <stdlib.h>
 
 XorData::XorData()
 {
@@ -25,14 +24,16 @@ XorData::XorData()
         _ppTrainingOutputs[i] = new long double[_trainingOutputCount];
     }
 
-    _ppTrainingOutputs[0][0] = 0.0f; _ppTrainingOutputs[0][1] = 0.0f;
-    _ppTrainingOutputs[1][0] = 0.0f; _ppTrainingOutputs[1][1] = 1.0f;
-    _ppTrainingOutputs[2][0] = 0.0f; _ppTrainingOutputs[2][1] = 1.0f;
-    _ppTrainingOutputs[3][0] = 1.0f; _ppTrainingOutputs[3][1] = 0.0f;
-    _ppTrainingOutputs[4][0] = 0.0f; _ppTrainingOutputs[4][1] = 1.0f;
-    _ppTrainingOutputs[5][0] = 1.0f; _ppTrainingOutputs[5][1] = 0.0f;
-    _ppTrainingOutputs[6][0] = 1.0f; _ppTrainingOutputs[6][1] = 0.0f;
-    _ppTrainingOutputs[7][0] = 1.0f; _ppTrainingOutputs[7][1] = 1.0f;
+    _ppTrainingOutputs[0][0] = 0.25f; _ppTrainingOutputs[0][1] = 0.25f;
+    _ppTrainingOutputs[1][0] = 0.25f; _ppTrainingOutputs[1][1] = 0.75f;
+    _ppTrainingOutputs[2][0] = 0.25f; _ppTrainingOutputs[2][1] = 0.75f;
+    _ppTrainingOutputs[3][0] = 0.75f; _ppTrainingOutputs[3][1] = 0.25f;
+    _ppTrainingOutputs[4][0] = 0.25f; _ppTrainingOutputs[4][1] = 0.75f;
+    _ppTrainingOutputs[5][0] = 0.75f; _ppTrainingOutputs[5][1] = 0.25f;
+    _ppTrainingOutputs[6][0] = 0.75f; _ppTrainingOutputs[6][1] = 0.25f;
+    _ppTrainingOutputs[7][0] = 0.75f; _ppTrainingOutputs[7][1] = 0.75f;
+
+    preprocesData();
 }
 
 XorData::~XorData()
@@ -68,12 +69,57 @@ void XorData::getSameData(long double*& inputs, long double*& outputs)
         outputs[i] = _ppTrainingOutputs[_i][i];
 }
 
+void XorData::calculateInputAverage()
+{
+    int n = 0;
+    for (int i = 0;i < _trainingSetCount;i++)
+    {
+        for (int j = 0; j < _trainingInputCount; j++)
+        {
+            n++;
+            _inputAverage += (_ppTrainingInputs[i][j] - _inputAverage) / n;
+        }
+    }
+}
+
+void XorData::calculateInputStandardDeviation()
+{
+    int n = 0;
+    long double d;
+    for (int i = 0;i < _trainingSetCount;i++)
+    {
+        for (int j = 0; j < _trainingInputCount; j++)
+        {
+            n++;
+            d = _ppTrainingInputs[i][j] - _inputAverage;
+            _inputStandardDeviation += d * d;
+        }
+    }
+    // devide just by n becouse we have the whole population as the dataset
+    _inputStandardDeviation /= n;
+    _inputStandardDeviation = sqrt(_inputStandardDeviation);
+}
+
+void XorData::preprocesData()
+{
+    calculateInputAverage();
+    calculateInputStandardDeviation();
+    for (int i = 0;i < _trainingInputCount;i++)
+    {
+        for (int j = 0; j < _trainingInputCount; j++)
+        {
+            _ppTrainingInputs[i][j] = (_ppTrainingInputs[i][j] - _inputAverage) / _inputStandardDeviation;
+        }
+    }
+}
+
+
 int* XorData::getNetworkLayout() 
 {
-    return NetworkLayout;
+    return _networkLayout;
 }
 
 int XorData::getNumberOfLayers()
 {
-    return numberOfLayers;
+    return _numberOfLayers;
 }

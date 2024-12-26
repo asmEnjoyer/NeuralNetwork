@@ -2,8 +2,9 @@
 
 //NEXT: remove all hardcoded values including : the network's layout and let the data class handle it
 
-Network::Network(NetworkData* data)
+Network::Network(NetworkData* data,long double lr)
 {
+	_lr = lr;
 	int layers = data->getNumberOfLayers();
 	int* layout = data->getNetworkLayout();
 	_ppLayers = new Layer*[layers-1];
@@ -16,6 +17,7 @@ Network::Network(NetworkData* data)
 	_outputs = layout[layers - 1];
 	_cLayers = layers-1;
 	_data = data;
+	srand((int)time(NULL));
 }
 
 Network::~Network()
@@ -29,24 +31,26 @@ Network::~Network()
 
 void Network::train(int epochs)
 {
-	////TODO: make a logging library to replace the "disp" commented lines
-	bool show;	//disp
 
 	for (int epoch = 0; epoch < epochs; epoch++)
 	{
-		show = false;	//disp
-		if ((epoch + 1) % 10000 == 0)	//disp
-		{
-			show = true;	//disp
-		}
-		if (epoch == epochs - 1)	//disp
-			show = true;	//disp
-	
-	
-		Utility.error = 0;
+		_error = 0;
 		train();
 	}
 
+}
+
+long double Network::calculateError(long double* expectedOutputs, long double* calculatedOutputs, int outputCount)
+{
+	long double finalError = 0;
+	long double currentError;
+	for (int i = 0; i < outputCount; i++)
+	{
+		currentError = expectedOutputs[i] - calculatedOutputs[i];
+		currentError *= currentError;
+		finalError += currentError;
+	}
+	return finalError;
 }
 
 void Network::train()
@@ -61,9 +65,9 @@ void Network::train()
 		}
 		delete[] firstInputs;
 
-		Utility.error += Utility.CalculateError(inputs, outputs, _outputs);
+		_error += calculateError(inputs, outputs, _outputs);
 		if (rand() % 100 == 0)
-			Log(std::to_string(Utility.CalculateError(inputs, outputs, _outputs)) + "\t" + std::to_string(Utility.lr));
+			Log(std::to_string(calculateError(inputs, outputs, _outputs)) + "\t" + std::to_string(_lr));
 		outputs = _ppLayers[_cLayers - 1]->Delta(outputs, Layer::DeltaMode::diffrence);
 		for (int j = _cLayers - 2; j >= 0; j--)
 		{
@@ -72,11 +76,11 @@ void Network::train()
 
 		for (int j = _cLayers - 1; j >= 1; j--)
 		{
-			_ppLayers[j]->Descent(_ppLayers[j - 1]->_pOutputs);
+			_ppLayers[j]->Descent(_ppLayers[j - 1]->_pOutputs,_lr);
 		}
 		delete[] outputs;
 		_data->getSameData(inputs, outputs);
-		_ppLayers[0]->Descent(inputs);
+		_ppLayers[0]->Descent(inputs,_lr);
 
 		delete[] inputs;
 		delete[] outputs;
