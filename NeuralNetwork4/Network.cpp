@@ -28,15 +28,26 @@ Network::~Network()
 		delete _ppLayers[i];
 	}
 	delete[] _ppLayers;
+	_ppLayers = nullptr;
 }
 
 void Network::train(int epochs)
 {
-
+	_count = false;
 	for (int epoch = 0; epoch < epochs; epoch++)
 	{
+		_precission = 60000;
 		_error = 0;
-		train();
+		if(epoch>=2)
+		{
+			_count = true;
+			_precission = 0;
+		}
+		for(int i=0;i<60000;i++)
+			train();
+		Log(std::to_string((long double)_precission/60000) + " " + std::to_string(_lr) + "\n");
+		if (((long double)_precission / 60000)/_lr < 0.3)
+			_lr *= 0.5;
 	}
 
 }
@@ -65,10 +76,17 @@ void Network::train()
 			inputs = _ppLayers[j]->Compute(inputs);
 		}
 		delete[] firstInputs;
+		firstInputs = nullptr;
 
-		_error += calculateError(inputs, outputs, _outputs);
-		if (rand() % 100 == 0)
-			Log(std::to_string(calculateError(inputs, outputs, _outputs)) + "\t" + std::to_string(_lr));
+		_error = calculateError(inputs, outputs, _outputs);
+		if (_error>=1)//||rand() % 100 == 0)
+			/*Log(std::to_string(calculateError(inputs, outputs, _outputs)) + "\t" + std::to_string(_lr));*/
+		{
+			if(_count)
+				_precission++;
+			else
+				Log(std::to_string(outputs[0]) + " " + std::to_string(outputs[1]) + " " + std::to_string(outputs[2]) + " " + std::to_string(outputs[3]) + " " + std::to_string(outputs[4]) + " " + std::to_string(outputs[5]) + " " + std::to_string(outputs[6]) + " " + std::to_string(outputs[7]) + " " + std::to_string(outputs[8]) + " " + std::to_string(outputs[9]) + " " + std::to_string(outputs[10]) + "\t" + std::to_string(_lr)+"\n\t\t\t"+ std::to_string(inputs[0]) + " " + std::to_string(inputs[1]) + " " + std::to_string(inputs[2]) + " " + std::to_string(inputs[3]) + " " + std::to_string(inputs[4]) + " " + std::to_string(inputs[5]) + " " + std::to_string(inputs[6]) + " " + std::to_string(inputs[7]) + " " + std::to_string(inputs[8]) + " " + std::to_string(inputs[9]) + " " + std::to_string(inputs[10]) + "\t" + std::to_string(_lr) + "\n");
+		}
 		outputs = _ppLayers[_cLayers - 1]->Delta(outputs, Layer::DeltaMode::diffrence);
 		for (int j = _cLayers - 2; j >= 0; j--)
 		{
@@ -80,10 +98,14 @@ void Network::train()
 			_ppLayers[j]->Descent(_ppLayers[j - 1]->_pOutputs,_lr);
 		}
 		delete[] outputs;
+		outputs = nullptr;
 		_data->getSameData(inputs, outputs);
 		_ppLayers[0]->Descent(inputs,_lr);
 
 		delete[] inputs;
+		inputs = nullptr;
+
 		delete[] outputs;
+		outputs = nullptr;
 
 }

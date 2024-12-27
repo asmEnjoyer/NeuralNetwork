@@ -64,12 +64,6 @@
     <None Include="train-labels.ubyte">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="testInput.ubyte">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="testOutput.ubyte">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="ClassDiagram.cd">
       <Filter>UtilityResources</Filter>
     </None>

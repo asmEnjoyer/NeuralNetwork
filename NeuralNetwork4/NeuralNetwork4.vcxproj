@@ -147,8 +147,6 @@
   <ItemGroup>
     <None Include="..\README.md" />
     <None Include="ClassDiagram.cd" />
-    <None Include="testInput.ubyte" />
-    <None Include="testOutput.ubyte" />
     <None Include="train-images.ubyte" />
     <None Include="train-labels.ubyte" />
   </ItemGroup>

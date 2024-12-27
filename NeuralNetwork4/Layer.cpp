@@ -36,7 +36,7 @@ void Layer::initWeights()
 	{
 		for (int j = 0; j < _cOutputs; j++)
 		{
-			_ppWeights[i][j] = Random()*-1;
+			_ppWeights[i][j] = Random()-0.5;
 		}
 	}
 	for (int i = 0; i < _cOutputs; i++)
@@ -63,7 +63,7 @@ long double Layer::dActivation(long double x) const
 	if (_type == regression)
 		return 1;
 	if (_type == classification)
-		return x * (1 - x);
+		return Activation(x) * (1 - Activation(x));
 	return 0;
 }
 
@@ -101,6 +101,7 @@ long double* Layer::Delta(long double* output, DeltaMode mode)
 	}
 
 	delete[] output;
+	output = nullptr;
 	output = new long double[_cInputs];
 	long double error;
 	for (int i = 0; i < _cInputs; i++)

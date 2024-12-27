@@ -16,6 +16,9 @@ class Network
 		Layer** _ppLayers;
 		NetworkData* _data;
 
+		int _precission;
+		bool _count;
+
 	public:
 
 		/// <summary>
