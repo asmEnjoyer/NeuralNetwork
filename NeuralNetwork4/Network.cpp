@@ -1,6 +1,6 @@
 #include "Network.h"
 
-//TODO add saving and loading the network data to a file
+//NEXT: add and implement a function to test the network on data it has not seen before
 
 Network::Network(NetworkData* data,long double lr)
 {
@@ -18,6 +18,8 @@ Network::Network(NetworkData* data,long double lr)
 	_outputs = layout[layers - 1];
 	_cLayers = layers-1;
 	_data = data;
+	_precission = 0;
+	_count = false;
 	srand((int)time(NULL));
 }
 

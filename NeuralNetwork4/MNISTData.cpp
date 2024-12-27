@@ -1,7 +1,5 @@
 #include "MNISTData.h"
 
-//NEXT continue working on this class
-
 MNISTData::MNISTData()
 {
 	_inputs.open("train-images.ubyte", std::ios::in | std::ios::binary);

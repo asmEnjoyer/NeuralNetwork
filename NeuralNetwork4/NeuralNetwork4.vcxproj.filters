@@ -70,5 +70,11 @@
     <None Include="..\README.md">
       <Filter>UtilityResources</Filter>
     </None>
+    <None Include="test-images.ubyte">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="test-labels.ubyte">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
