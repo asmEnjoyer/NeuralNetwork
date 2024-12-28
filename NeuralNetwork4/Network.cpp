@@ -1,6 +1,10 @@
 #include "Network.h"
 
 //NEXT: add and implement a function to test the network on data it has not seen before
+//TODO: add a function to save the network to a file
+
+//NEXT: split the train function into smaller functions
+
 
 Network::Network(NetworkData* data,long double lr)
 {
@@ -38,13 +42,7 @@ void Network::train(int epochs)
 	_count = false;
 	for (int epoch = 0; epoch < epochs; epoch++)
 	{
-		_precission = 60000;
-		_error = 0;
-		if(epoch>=2)
-		{
-			_count = true;
-			_precission = 0;
-		}
+		_precission = 0;
 		for(int i=0;i<60000;i++)
 			train();
 		Log(std::to_string((long double)_precission/60000) + " " + std::to_string(_lr) + "\n");
@@ -71,43 +69,61 @@ void Network::train()
 {
 		long double* inputs;
 		long double* outputs;
+		long double* initInputs;
+		long double* initOutputs;
 		_data->getNextData(inputs, outputs);
-		long double* firstInputs = inputs;
-		for (int j = 0; j < _cLayers; j++)
+		initInputs = inputs;
+		initOutputs = outputs;
+		inputs = compute(inputs);
+		
+		/*if (compute(inputs, outputs)>=1)
 		{
-			inputs = _ppLayers[j]->Compute(inputs);
-		}
-		delete[] firstInputs;
-		firstInputs = nullptr;
+			_precission++;
+		}*/
 
-		_error = calculateError(inputs, outputs, _outputs);
-		if (_error>=1)//||rand() % 100 == 0)
-			/*Log(std::to_string(calculateError(inputs, outputs, _outputs)) + "\t" + std::to_string(_lr));*/
-		{
-			if(_count)
-				_precission++;
-			else
-				Log(std::to_string(outputs[0]) + " " + std::to_string(outputs[1]) + " " + std::to_string(outputs[2]) + " " + std::to_string(outputs[3]) + " " + std::to_string(outputs[4]) + " " + std::to_string(outputs[5]) + " " + std::to_string(outputs[6]) + " " + std::to_string(outputs[7]) + " " + std::to_string(outputs[8]) + " " + std::to_string(outputs[9]) + " " + std::to_string(outputs[10]) + "\t" + std::to_string(_lr)+"\n\t\t\t"+ std::to_string(inputs[0]) + " " + std::to_string(inputs[1]) + " " + std::to_string(inputs[2]) + " " + std::to_string(inputs[3]) + " " + std::to_string(inputs[4]) + " " + std::to_string(inputs[5]) + " " + std::to_string(inputs[6]) + " " + std::to_string(inputs[7]) + " " + std::to_string(inputs[8]) + " " + std::to_string(inputs[9]) + " " + std::to_string(inputs[10]) + "\t" + std::to_string(_lr) + "\n");
-		}
-		outputs = _ppLayers[_cLayers - 1]->Delta(outputs, Layer::DeltaMode::diffrence);
-		for (int j = _cLayers - 2; j >= 0; j--)
-		{
-			outputs = _ppLayers[j]->Delta(outputs, Layer::DeltaMode::multiplication);
-		}
+		//if (_error>=1)//||rand() % 100 == 0)
+		//{
+		//	if(_count)
+		//		_precission++;
+		//	else
+		//		Log(std::to_string(outputs[0]) + " " + std::to_string(outputs[1]) + " " + std::to_string(outputs[2]) + " " + std::to_string(outputs[3]) + " " + std::to_string(outputs[4]) + " " + std::to_string(outputs[5]) + " " + std::to_string(outputs[6]) + " " + std::to_string(outputs[7]) + " " + std::to_string(outputs[8]) + " " + std::to_string(outputs[9]) + " " + std::to_string(outputs[10]) + "\t" + std::to_string(_lr)+"\n\t\t\t"+ std::to_string(inputs[0]) + " " + std::to_string(inputs[1]) + " " + std::to_string(inputs[2]) + " " + std::to_string(inputs[3]) + " " + std::to_string(inputs[4]) + " " + std::to_string(inputs[5]) + " " + std::to_string(inputs[6]) + " " + std::to_string(inputs[7]) + " " + std::to_string(inputs[8]) + " " + std::to_string(inputs[9]) + " " + std::to_string(inputs[10]) + "\t" + std::to_string(_lr) + "\n");
+		//}
 
-		for (int j = _cLayers - 1; j >= 1; j--)
-		{
-			_ppLayers[j]->Descent(_ppLayers[j - 1]->_pOutputs,_lr);
-		}
-		delete[] outputs;
-		outputs = nullptr;
-		_data->getSameData(inputs, outputs);
-		_ppLayers[0]->Descent(inputs,_lr);
+		backpropagation(inputs, outputs);
 
-		delete[] inputs;
-		inputs = nullptr;
+		delete[] initInputs;
+		initInputs = nullptr;
 
-		delete[] outputs;
-		outputs = nullptr;
+		/*delete[] initOutputs;
+		initOutputs = nullptr;*/
 
+}
+
+long double* Network::compute(long double* inputs)
+{
+	for (int j = 0; j < _cLayers; j++)
+	{
+		inputs = _ppLayers[j]->Compute(inputs);
+	}
+	return inputs;
+
+}
+
+void Network::backpropagation(long double* inputs, long double* outputs)
+{
+	outputs = _ppLayers[_cLayers - 1]->delta(outputs, Layer::DeltaMode::diffrence);
+	for (int j = _cLayers - 2; j >= 0; j--)
+	{
+		outputs = _ppLayers[j]->delta(outputs, Layer::DeltaMode::multiplication);
+	}
+
+	for (int j = _cLayers - 1; j >= 1; j--)
+	{
+		_ppLayers[j]->descent(_ppLayers[j - 1]->_pOutputs, _lr);
+	}
+	delete[] outputs;
+	_data->getSameData(inputs, outputs);
+	_ppLayers[0]->descent(inputs, _lr);
+	delete[] inputs;
+	delete[] outputs;
 }

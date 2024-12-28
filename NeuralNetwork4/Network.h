@@ -53,5 +53,14 @@ class Network
 		/// Train the network for one epoch.
 		/// </summary>
 		void train();
+
+		/// <summary>
+		/// Calculate the outputs of the network based on the inputs.
+		/// </summary>
+		/// <param name="inputs">The inputs of the network</param>
+		/// <returns>The error of the network</returns>
+		long double* compute(long double* inputs);
+
+		void backpropagation(long double* inputs, long double* outputs);
 };
 

@@ -82,7 +82,7 @@ long double* Layer::Compute(long double* inputs)
 	return _pOutputs;
 }
 
-long double* Layer::Delta(long double* output, DeltaMode mode)
+long double* Layer::delta(long double* output, DeltaMode mode)
 {
 	if (mode == diffrence)
 	{
@@ -116,7 +116,7 @@ long double* Layer::Delta(long double* output, DeltaMode mode)
 	return output;
 }
 
-void Layer::Descent(long double* inputs,long double lr)
+void Layer::descent(long double* inputs,long double lr)
 {
 	for (int i = 0; i < _cOutputs; i++)
 	{
