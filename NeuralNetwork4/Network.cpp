@@ -1,15 +1,13 @@
 #include "Network.h"
 
-//NEXT: add and implement a function to test the network on data it has not seen before
+//NEXT: use memcpy to compy more data at once
 //TODO: add a function to save the network to a file
+//TODO: move most of the calculations onto the GPU
 
-//NEXT: split the train function into smaller functions
-
-
-Network::Network(NetworkData* data,long double lr)
+Network::Network(NetworkData* data,long double lr,long double wd)
 {
 	_lr = lr;
-	_error = 0;
+	_wd = wd;
 	int layers = data->getNumberOfLayers();
 	int* layout = data->getNetworkLayout();
 	_ppLayers = new Layer*[layers-1];
@@ -39,15 +37,14 @@ Network::~Network()
 
 void Network::train(int epochs)
 {
-	_count = false;
 	for (int epoch = 0; epoch < epochs; epoch++)
 	{
-		_precission = 0;
+		_precission = testNetwork();
+		Log(std::to_string(_precission) + " " + std::to_string(_lr));
+		if (_precission/_lr < 0.5)
+			_lr *= 0.5;
 		for(int i=0;i<60000;i++)
 			train();
-		Log(std::to_string((long double)_precission/60000) + " " + std::to_string(_lr) + "\n");
-		if (((long double)_precission / 60000)/_lr < 0.3)
-			_lr *= 0.5;
 	}
 
 }
@@ -70,32 +67,13 @@ void Network::train()
 		long double* inputs;
 		long double* outputs;
 		long double* initInputs;
-		long double* initOutputs;
-		_data->getNextData(inputs, outputs);
+		_data->getNextTrainingData(inputs, outputs);
 		initInputs = inputs;
-		initOutputs = outputs;
 		inputs = compute(inputs);
-		
-		/*if (compute(inputs, outputs)>=1)
-		{
-			_precission++;
-		}*/
-
-		//if (_error>=1)//||rand() % 100 == 0)
-		//{
-		//	if(_count)
-		//		_precission++;
-		//	else
-		//		Log(std::to_string(outputs[0]) + " " + std::to_string(outputs[1]) + " " + std::to_string(outputs[2]) + " " + std::to_string(outputs[3]) + " " + std::to_string(outputs[4]) + " " + std::to_string(outputs[5]) + " " + std::to_string(outputs[6]) + " " + std::to_string(outputs[7]) + " " + std::to_string(outputs[8]) + " " + std::to_string(outputs[9]) + " " + std::to_string(outputs[10]) + "\t" + std::to_string(_lr)+"\n\t\t\t"+ std::to_string(inputs[0]) + " " + std::to_string(inputs[1]) + " " + std::to_string(inputs[2]) + " " + std::to_string(inputs[3]) + " " + std::to_string(inputs[4]) + " " + std::to_string(inputs[5]) + " " + std::to_string(inputs[6]) + " " + std::to_string(inputs[7]) + " " + std::to_string(inputs[8]) + " " + std::to_string(inputs[9]) + " " + std::to_string(inputs[10]) + "\t" + std::to_string(_lr) + "\n");
-		//}
-
 		backpropagation(inputs, outputs);
 
 		delete[] initInputs;
 		initInputs = nullptr;
-
-		/*delete[] initOutputs;
-		initOutputs = nullptr;*/
 
 }
 
@@ -109,6 +87,24 @@ long double* Network::compute(long double* inputs)
 
 }
 
+long double Network::testNetwork()
+{
+	long double* inputs;
+	long double* outputs;
+	_data->loadTestData();
+	long double error = 0;
+	int i = 0;
+	while (_data->getNextTestData(inputs,outputs))
+	{
+		if (calculateError(compute(inputs), outputs, 11) >= 1)
+			error++;
+		i++;
+		delete[] inputs;
+		delete[] outputs;
+	}
+	return error / i;
+}
+
 void Network::backpropagation(long double* inputs, long double* outputs)
 {
 	outputs = _ppLayers[_cLayers - 1]->delta(outputs, Layer::DeltaMode::diffrence);
@@ -119,11 +115,11 @@ void Network::backpropagation(long double* inputs, long double* outputs)
 
 	for (int j = _cLayers - 1; j >= 1; j--)
 	{
-		_ppLayers[j]->descent(_ppLayers[j - 1]->_pOutputs, _lr);
+		_ppLayers[j]->descent(_ppLayers[j - 1]->_pOutputs, _lr,_wd);
 	}
 	delete[] outputs;
-	_data->getSameData(inputs, outputs);
-	_ppLayers[0]->descent(inputs, _lr);
+	_data->getSameTrainingData(inputs, outputs);
+	_ppLayers[0]->descent(inputs, _lr,_wd);
 	delete[] inputs;
 	delete[] outputs;
 }

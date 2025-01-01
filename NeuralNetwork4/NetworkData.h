@@ -9,14 +9,33 @@ class NetworkData
         /// </summary>
 		/// <param name="inputs">The inputs of the data</param>
 		/// <param name="outputs">The outputs of the data</param>
-        virtual void getNextData(long double*& inputs, long double*& outputs) = 0;
+        virtual void getNextTrainingData(long double*& inputs, long double*& outputs) = 0;
 
 		/// <summary>
 		/// Get the same data from the data set.
 		/// </summary>
 		/// <param name="inputs">The inputs of the data</param>
 		/// <param name="outputs">The outputs of the data</param>
-        virtual void getSameData(long double*& inputs, long double*& outputs) = 0;
+        virtual void getSameTrainingData(long double*& inputs, long double*& outputs) = 0;
+
+		/// <summary>
+		/// Get the next test data from the data set.
+		/// </summary>
+		/// <param name="inputs">The inputs of the data</param>
+		/// <param name="outputs">The outputs of the data</param>
+		virtual bool getNextTestData(long double*& inputs, long double*& outputs) = 0;
+
+		/// <summary>
+		/// Get the same test data from the data set.
+		/// </summary>
+		/// <param name="inputs">The inputs of the data</param>
+		/// <param name="outputs">The outputs of the data</param>
+		virtual void getSameTestData(long double*& inputs, long double*& outputs) = 0;
+		
+		/// <summary>
+		/// Load the test data.
+		/// </summary>
+		virtual void loadTestData() = 0;
 
 		/// <summary>
 		/// Preprocess the data.

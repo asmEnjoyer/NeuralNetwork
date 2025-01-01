@@ -9,14 +9,14 @@ class Network
 {
 	private:
 		long double _lr;
-		long double _error;
+		long double _wd;
 		int _inputs;
 		int _outputs;
 		int _cLayers;
 		Layer** _ppLayers;
 		NetworkData* _data;
 
-		int _precission;
+		long double _precission;
 		bool _count;
 
 	public:
@@ -26,7 +26,7 @@ class Network
 		/// </summary>
 		/// <param name="data">The data the network will be trained on</param>
 		/// <param name="lr">The learning rate of the network</param>
-		Network(NetworkData* data,long double lr);
+		Network(NetworkData* data,long double lr,long double wd);
 
 		/// <summary>
 		/// Free space allocated for arrays.
@@ -60,6 +60,8 @@ class Network
 		/// <param name="inputs">The inputs of the network</param>
 		/// <returns>The error of the network</returns>
 		long double* compute(long double* inputs);
+
+		long double testNetwork();
 
 		void backpropagation(long double* inputs, long double* outputs);
 };

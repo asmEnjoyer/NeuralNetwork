@@ -79,7 +79,8 @@ class Layer
 		/// </summary>
 		/// <param name="inputs">inputs the layer got</param>
 		/// <param name="lr">learning rate</param>
-		void descent(long double* inputs,long double lr);
+		/// <param name="wd">weight decay</param>
+		void descent(long double* inputs,long double lr,long double wd);
 
 		/// <summary>
 		/// Get a random double.

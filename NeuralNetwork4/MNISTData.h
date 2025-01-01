@@ -7,15 +7,19 @@ class MNISTData :
 {
     private:
 		//11 outputs for the 10 digits and noise
-		int _networkLayout[5] = { 784,50,50,50,11 };
-		int _numberOfLayers = 5;
+		int _networkLayout[6] = { 784,100,100,100,100,11 };
+		int _numberOfLayers = 6;
 		int _trainingSetCount = 60000;
 
-		long double* _pInputs;
-		long double* _pOutputs;
+		long double* _pTrainingInputArray;
+		long double* _pTrainingOutputArray;
+		long double* _pTestInputArray;
+		long double* _pTestOutputArray;
 
-		std::fstream _inputs;
-		std::fstream _outputs;
+		std::fstream _trainingInputs;
+		std::fstream _trainingOutputs;
+		std::fstream _testInputs;
+		std::fstream _testOutputs;
 
     public:
 
@@ -34,19 +38,38 @@ class MNISTData :
 		/// </summary>
 		/// <param name="inputs">The inputs of the data</param>
 		/// <param name="outputs">The outputs of the data</param>
-        void getNextData(long double*& inputs, long double*& outputs) override;
+        void getNextTrainingData(long double*& inputs, long double*& outputs) override;
 
 		/// <summary>
 		/// Get the same data from the data set.
 		/// </summary>
 		/// <param name="inputs">The inputs of the data</param>
 		/// <param name="outputs">The outputs of the data</param>
-        void getSameData(long double*& inputs, long double*& outputs) override;
+        void getSameTrainingData(long double*& inputs, long double*& outputs) override;
+
+		/// <summary>
+		/// Get the next test data from the data set.
+		/// </summary>
+		/// <param name="inputs">The inputs of the data</param>
+		/// <param name="outputs">The outputs of the data</param>
+		bool getNextTestData(long double*& inputs, long double*& outputs) override;
+
+		/// <summary>
+		/// Get the same test data from the data set.
+		/// </summary>
+		/// <param name="inputs">The inputs of the data</param>
+		/// <param name="outputs">The outputs of the data</param>
+		void getSameTestData(long double*& inputs, long double*& outputs) override;
 
 		/// <summary>
 		/// Reload the files.
 		/// </summary>
-		void reloadFiles();
+		void reloadTrainingFiles();
+
+		/// <summary>
+		/// Load the test data.
+		/// </summary>
+		void loadTestData() override;
 
 		/// <summary>
 		/// Preprocess the data.

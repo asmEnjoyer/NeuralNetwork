@@ -116,16 +116,16 @@ long double* Layer::delta(long double* output, DeltaMode mode)
 	return output;
 }
 
-void Layer::descent(long double* inputs,long double lr)
+void Layer::descent(long double* inputs,long double lr,long double wd)
 {
 	for (int i = 0; i < _cOutputs; i++)
 	{
 		_pBiases[i] += _pDelta[i] * lr;
-		//_pBiases[i] *= (1 - Utility.wd);
+		_pBiases[i] *= (1 - wd);
 		for (int j = 0; j < _cInputs; j++)
 		{
 			_ppWeights[j][i] += inputs[j] * _pDelta[i] * lr;
-			//_ppWeights[j][i] *= (1 - Utility.wd);
+			_ppWeights[j][i] *= (1 - wd);
 		}
 	}
 }
